@@ -1,1 +1,5 @@
-export const JWT_TOKEN='secret';
+module.exports={
+    JWT_TOKEN:'secret'
+}
+
+//"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWY4MDQ3YjMzMDliY2FjMjZkM2JjMGMiLCJpYXQiOjE3MTA3NTI4OTF9.h3PfLYh4AZW51JXpGPIDUQ_oS8UbSG04QrvcTlRFWZw"

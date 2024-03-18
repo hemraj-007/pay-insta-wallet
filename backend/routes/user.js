@@ -2,13 +2,13 @@ const express=require('express');
 const router=express.Router();
 const zod=require('zod');
 const jwt=require('jsonwebtoken')
-import { User,Account } from '../db';
-import { JWT_TOKEN } from '../config';
-import { authMiddleware } from '../middleware';
+const {User, Account} =require('../db')
+const { JWT_TOKEN } =require('../config')
+const { authMiddleware } =require('../middleware');
 
 const signupSchema=zod.object({
     username:zod.string().email(),
-    password:zod.string().minLength(6),
+    password:zod.string(),
     firstName:zod.string(),
     lastName:zod.string()
 })
@@ -23,9 +23,9 @@ router.post('/signup',async (req,res)=>{
     const user=await User.findOne({
         username:body.username
     })
-    if(user._id){
+    if (user && user._id) {
         return res.json({
-            msg:'already taken'
+            msg: 'Username is already taken'
         });
     }
 
@@ -82,18 +82,20 @@ const updateSchema=zod.object({
     lastName:zod.string().optional()
 });
 
-router.put('/',authMiddleware,async (req,res)=>{
-    const body=req.body;
-    const {success}=updateSchema.safeParse(body);
-    if(!success){
+router.put("/", authMiddleware, async (req, res) => {
+    const { success } = updateBody.safeParse(req.body)
+    if (!success) {
         res.status(411).json({
-            msg:'error while updating'
-        });
+            message: "Error while updating information"
+        })
     }
-    const user=await User.updateOne({id:req.userId},req.body);
+
+    await User.updateOne(req.body, {
+        id: req.userId
+    })
 
     res.json({
-        msg:'updated'
+        message: "Updated successfully"
     })
 })
 
